@@ -1,0 +1,103 @@
+<html>
+<head>
+<script >
+function append(){
+  var node = document.getElementById("lbl");
+  text = node.textContent;
+  if(text === "0"){
+    text = "";
+  }
+  text = text + event.target.textContent;
+  document.getElementById("lbl").innerHTML = text;
+}
+function AC(){
+  document.getElementById("lbl").innerHTML = "0";
+}
+function eValuate(){
+    var node = document.getElementById("lbl");
+    text = node.textContent;
+    var stack = [];
+    var n=0;
+    for(i=0; i<text.length;i++){
+       cur = text[i];
+       if(cur>='0' && cur<='9'){
+         n *= 10;
+         n += cur-'0';
+       }
+       else{
+         document.getElementById("lbl").innerHTML = n;
+         if(stack.length === 0){
+           stack.push(n);
+           stack.push(cur);
+           n = 0;
+         }
+         else{
+                if(stack[stack.length-1] === '*' || stack[stack.length-1] === '/'){
+                    sign = stack.pop();
+                    y = stack.pop();
+                    if(sign === '*'){
+                      stack.push(n*y);
+                    }
+                    else{
+                      stack.push(y/n);
+                    }
+                }
+                else{
+                  stack.push(n);
+                }
+                stack.push(cur);
+                n = 0;
+         }
+       }
+    }
+    if(stack.length >1 && (stack[stack.length-1]==='/' || stack[stack.length-1]==='*')){
+        sign = stack.pop();
+        y = stack.pop();
+        if(sign === '*'){
+          stack.push(n*y);
+        }
+        else{
+          stack.push(y/n);
+        }
+    }
+    else{
+      stack.push(n);
+    }
+    while(stack.length > 1){
+        x = stack.pop();
+        sign = stack.pop();
+        y = stack.pop();
+        if(sign === '+'){
+          stack.push(x+y);
+        }
+        else{
+          stack.push(-x+y);
+        }
+    }
+    document.getElementById("lbl").innerHTML = stack.pop();
+}
+</script>
+<link rel="stylesheet" type="text/css" href="project.css">
+</head>
+
+<body>
+  <div class = textLabel id="lbl">0</div>
+  <div class="grid-container">
+    <button type="click" class="grid-item" onclick="append()">1</button>
+    <button type="click" class="grid-item" onclick="append()">2</button>
+    <button type="click" class="grid-item" onclick="append()">3</button>
+    <button type="click" class="grid-item" onclick="append()">4</button>
+    <button type="click" class="grid-item" onclick="append()">5</button>
+    <button type="click" class="grid-item" onclick="append()">6</button>
+    <button type="click" class="grid-item" onclick="append()">7</button>
+    <button type="click" class="grid-item" onclick="append()">8</button>
+    <button type="click" class="grid-item" onclick="append()">9</button>
+    <button type="click" class="grid-item" onclick="append()">+</button>
+    <button type="click" class="grid-item" onclick="append()">-</button>
+    <button type="click" class="grid-item" onclick="append()">*</button>
+    <button type="click" class="grid-item" onclick="append()">/</button>
+    <button type="click" class="grid-item" onclick="eValuate()">=</button>
+    <button type="click" class="grid-item" onclick="AC()">AC</button>
+  </div>
+</body>
+</html>
